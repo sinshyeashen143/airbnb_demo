@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <title>Booking Listing</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1>LEAD Tour</h1>
+        <h2>Booking Listing</h2>
+
+        <table class='table table-striped' id='tblBooking'>
+
+          <thead class='thead-dark'>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Arrival Date</th>
+            <th>Days</th>
+            <th>Package</th>
+          </thead>
+
+          <tbody>
+          </tbody>
+
+        </table>
+      </div> <!-- end of col -->
+    </div> <!-- end of row-->
+  </div> <!-- end of container-->
+</body>
+
+<script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDQHfcvWQYUqnimUNToWgEQcg4Y1W5s6Pw",
+    authDomain: "airbnb-8efb1.firebaseapp.com",
+    databaseURL: "https://airbnb-8efb1.firebaseio.com",
+    projectId: "airbnb-8efb1",
+    storageBucket: "airbnb-8efb1.appspot.com",
+    messagingSenderId: "862976965507"
+  };
+
+  firebase.initializeApp(config);
+  var db = firebase.firestore();
+  db.settings({
+    timestampsInSnapshots: true
+  });
+
+  db.collection("bookings").get().then(function (results) {
+    results.forEach(function (doc) {
+      // doc.data() is never undefined for query doc snapshots
+      var data = doc.data();
+      var row = $('<tr></tr>');
+      $(row).append("<td>" + data['name'] + "</td>");
+      $(row).append("<td>" + data['email'] + "</td>");
+      $(row).append("<td>" + data['arrival_date'] + "</td>");
+      $(row).append("<td>" + data['no_of_days'] + "</td>");
+      $(row).append("<td>" + data['selected_item'] + "</td>");
+      $("#tblBooking tbody").append(row);
+    });
+  });
+</script>
+
+</html>
